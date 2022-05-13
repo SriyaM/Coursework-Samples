@@ -1,0 +1,63 @@
+Sriya Mantena
+
+Warmup
+------
+Q1. The display of the Stack in the debugger uses the labels `top` and `bottom` to mark the two ends of the stack. How are the contents labeled when the Stack contains only one element?
+A1. The single element is labelled as front/back indicating that it is occupying both the frontmost and backmost spot in the stack.
+
+Q2. For which type of inputs does the function go into an infinite loop?
+A2. For inputs where both the first and last number in the queue is negative, the function goes into an infinite loop.
+
+Q3. Show your edited code for duplicateNegatives that fixes the problem with the infinite loop
+A3.
+
+void duplicateNegatives(Queue<int>& q) {
+Queue<int> s = q;
+for (int i = 0; i < s.size(); i++) {
+    int val = q.dequeue();
+    q.enqueue(val);
+    if (val < 0) {
+        q.enqueue(val);   // double up on negative numbers
+    }
+}
+}
+
+Q4. What is the better fix to `sumStack` that corrects the bug?
+A4. Initializing total to 0 at the beginning rather than popping the first element as shown below. This way the while loop checks if the stack is empty before performing operations on it.
+
+Maze
+-------
+Q5. In lecture, Cynthia noted the convention is to pass large data structures by reference for reasons of efficiency. Why then do you think `validatePath` passes `path` by value instead of by reference?
+A5. We need to be able to modify the path because it is a stack to be able to view the previous locations on the path. If we pass by reference, the changes (mainly popping values) would be reflected outside of the function, which we do not want.
+
+Q6. After you have written your tests, describe your testing strategy to determine that your `validatePath` works as intended.
+A6. I used a 5x5 grid to validate that the function flagged an error when the path ended one away from the exit, when it had a loop, and when it went through a wall. Additionally, I tested to see if a longer path through the 5x5 grid that was correct would not raise any errors.
+
+Search Engine
+-------------
+Q7. Sketch the contents of the inverted index built from the `res/tiny.txt` database file.
+A7.
+
+milk - www.shoppinglist.com
+fish - www.shoppinglist.com, www.dr.seuss.net, www.bigbadwolf.com
+bread - www.shoppinglist.com
+5lb_m&ms - www.shoppinglist.com
+red - www.rainbow.org, www.dr.seuss.net
+green - www.rainbow.org
+blue - www.rainbow.org, www.dr.seuss.net
+one - www.dr.seuss.net
+two - www.dr.seuss.net
+eat - www.bigbadwolf.com
+i - www.bigbadwolf.com
+
+
+Beyond Algorithmic Analysis
+---------------------------
+Q8. In a short paragraph, describe a real or plausible scenario not previously presented in lecture in which using techniques like Big-O or Asymptotic Analysis to improve the performance of an algorithm might benefit the environment. Include your thoughts on how a software engineer working on this piece of code might identify such potential benefits and take them into consideration when designing the code.
+A8. For companies and research groups working with large compute clusters and complex algorithms, using Big-O analysis may help them create more energy efficient processes. If the run-time of jobs is less and they are less computationally demanding, the companies will reduce energy use and cut generated heat. Although software engineers in big companies or research groups may have the resources to run inefficient algorithms, but they should consider using more streamlined algortihms or techniques like dynamic voltage scaling on processors to put them on an energy-saving schedule.
+
+Q9. According to the contract that IBM struck with the state of Indiana, the criteria for optimization were improving efficiency of the overall welfare system and reducing fraud. Criteria for reducing wait times and wrongful denials were not included.  However, wrongfully denying benefits has a huge negative  impact on the citizens who rely on the system.  If criteria like minimizing wrongful denials were not included in the contract, should engineers have included them in their optimization algorithm?  Why or why not?
+A9. The engineers should have been conscious about the factors in play that were not necessarily included in their contract such as the wrongful denials and wait times. If engineers introduce algorithms that are efficient, but reduce the quality of a system and deny people of benefits such as welfare, they should not be satisfied with there work. Engineers should be responsible for making sure that the application of their efficient models will not interfere with existing processes, introduce biases, or misrepresent data.
+
+Q10. Imagine that after completing CS106B you are hired at IBM as an engineer working on this system. How might you have approached designing and setting the goals of this system?  How might you apply algorithmic analysis tools to build a system that achieved  the desired goals? Could you do so in a way that avoids the severe negative impacts on users of the system that are outlined in the case study?
+A10. If I worked at IBM, I would have gained a better understanding of the welfare system before I started to work on the algorithm. This way, I could be aware and account for things such as the wait times, issues with automated calls, etc. After this research period, I would make sure to integrate these considerations into my code and use algorithmic analysis to make sure that the code runs as efficiently as possible within the functionality parameters that I set prior to beginning the development process. For example, instead of having a faxing center handle all the documents, we could either assign people various faxing centers or manage the documents digitally. By adding small features like this to the algorithm and using big-O analysis on each process we could develop an efficient and beneficial welfare system.

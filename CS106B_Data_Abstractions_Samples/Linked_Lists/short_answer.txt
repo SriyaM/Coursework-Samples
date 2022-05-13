@@ -1,0 +1,53 @@
+Before submitting this file, make sure that there are no more TODO
+placeholders remaining in the file (and remove this comment too).
+
+Memory Debugging Warmup
+-----------------------
+Q1. What does the yellow background for a test case indicate in the SimpleTest result window?
+A1. The yellow background indicates a memory leak -- when the number of new and delete calls do not match up.
+
+Q2. What is the observed consequence of a test that uses `delete` on a memory address that has already been deallocated?
+A2. The program will not stop running. It gets stuck.
+
+Q3. On your system, what is the observed consequence of `badDeallocate`? Under what circumstances (if any) did the buggy code trigger an error or crash?
+A3. When there was less exposure to the bug, the test succeeded. When there was more exposure to the bug, the test succeeded twice, but then for a number of consecutive tests the program did not finish executing and got stuck.
+
+Q4. How is a segmentation fault presented on your system?
+A4. In debug mode, the yellow arrow settles on the line where there is a segmentation fault and it refuses to move forward from it. When running the program regularly, it does not complete executing (gets stuck), but prints out a sparse error message in the application output tab.
+
+Labyrinth
+---------
+Q5. What is a different legal path through the example labyrinth that gathers all three needed items?
+A5. ESNWSWWNSEENWNNE
+
+Sorting Linked Lists
+---------------------
+Q6. If the `deallocateList` utility function were implemented recursively, give a rough estimate of the maximum length list it could successfully handle. What would be the observed result from attempting to deallocate a list longer than this maximum?
+A6. It could handle about 16,000 in length and would probably result in stack overflow if we went above this threshold.
+
+Q7. The sort prototype takes a `ListNode*` by reference. Explain why the pointer itself needs to be passed by reference and what the consequence would be if it were not.
+A7. The pointer needs to be passed by address so that we can change what address it is pointing to. If it wasn’t passed by reference, we could not change what the pointer is pointing to and we could be pointing to a random variable.
+
+Q8. Run time trials and provide your results that confirm that RunSort is O(N^2) . Verify you can achieve O(N) results on inputs constructed to play to its strengths.
+A8. size = 5000       t = 0.000 secs
+size = 10000     t = 0.001 secs
+size = 20000     t = 0.167 secs
+size = 40000     t = 2.558 secs
+
+As the size doubles, the time increases at an exponential rate as indicated in O(N^2).
+
+Q9. Run time trials and provide your results that confirm that QuickSort is O(NlogN) . Verify the runtime degrades to O(N^2) on inputs constructed to trigger the worst case behavior.
+A9. size = 500       t = 0.000 secs
+size = 500       t = 0.000 secs
+size = 1000     t = 0.001 secs
+size = 1000     t = 0.001 secs
+size = 2000     t = 0.001 secs
+size = 2000     t = 0.004 secs
+
+When doubled, the runtime barely increases in a normal case.
+In the worst case, however, the runtime quadruples when the size is doubled.
+
+
+Q10. Run the provided timing trials that compare your linked list QuickSort to a Vector sort on the same sequence and report the results. Who wins and why?
+A10. Quicksort is faster because, in the partition function, we are only inserting the elements that we absolutely need. With a vector, we would have to create three new arrays which would each take up space than just having enough space for the data we have (this is what happens in quicksort).
+

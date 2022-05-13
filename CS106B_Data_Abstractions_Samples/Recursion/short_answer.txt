@@ -1,0 +1,83 @@
+Sriya Mantena
+
+Warmup
+------
+
+Q1. Looking at a call stack listing in a debugger, what is the indication that the program being debugged uses recursion?
+A1. You can look at the call stack and if there are several stack frames calling the same function with n incrementing, then the program being debugged uses recursion.
+
+
+Q2. Subtract the innermost level number from the outermost to get the maximum count of stack frames that fit in the capacity of the call stack. How many stack frames fit in your system's call stack?
+A2. 16,228 stack frames fit in my system’s call stack.
+
+Q3. Describe how the symptoms of infinite recursion differ from the symptoms of an infinite loop.
+A3. If infinite recursion occurs, then the program unexpectedly crashes due to stack overflow, but if there’s an infinite loop, the program keeps running and does not stop.
+
+Q4. What is the pattern to which values of base number and exponent result in a test failure?
+A4. Negative base numbers seem to result in a failure.
+
+Q5. Of the existing five cases, are there any that seem redundant and can be removed from the function? Which do you think are absolutely necessary? Are there any cases that you're unsure about?
+A5. The case where the base is a negative number could be merged with another case. The cases where the base is equal to zero may not be needed but the case where the exponent is equal to zero seems necessary.
+
+
+Balanced
+--------
+
+Q6. Compare your recursive solution to the iterative approach used for the Check Balance problem in [Section 1][section1]. Which version do you find easier to read and understand? In which version did you find it easier to confirm the correct behavior?
+A6. The recursive approach is much easier to read and understand. It is also the easier version to debug and the logic is more clearly reflected in the recursive cases.
+
+Merge
+-----
+
+Q7. Give a rough estimate of the maximum length sequence that could be successfully merged on your system assuming a recursive implementation of `binaryMerge`.
+A7. Everytime the recursive function is called, one element is dequeue from the original list and added to the final. Accordingly, the maximum length of a given sequence that oculd be inputted would be equal to approximately the max number of call stacks, given that the other sequence is really small. Essentially the sum of the lengths of both the inputted sequences can be 16,228.
+
+Q8. What would be the observed behavior if attempting to recursively merge a sequence larger than that maximum?
+A8. The function would crash unexpectedly due to stack overflow.
+
+Q9. Include the data from your execution timing and explain how it supports your Big O prediction for `binaryMerge`.
+A9. Data:
+n = 5000000     t = 7.610 secs
+n = 10000000   t = 15.450 secs
+n = 20000000   t = 34.624 secs
+n = 40000000   t = 176.598 secs
+
+My prediction for big O was O(n)as for each element in each set, there is one main process being done. Based on the data, this makes sense because as n is doubled, the amount of time it takes for the program to run also doubles, meaning that there is a linear relationship between n and the run time.
+
+Q10. Include the data from your execution timing and explain how it supports your Big O prediction for `naiveMultiMerge`.
+A10. Data (varying n, constant k = 10):
+n = 2000000     t = 4.172 secs
+n = 4000000     t = 8.376 secs
+n = 8000000     t = 16.697 secs
+n = 16000000   t = 56.392 secs
+n = 32000000   t = 213.973 secs
+
+Data (varying k, constant n = 8000000):
+k = 2      t = 4.038 secs
+k = 4      t = 7.407 secs
+n = 8      t = 13.476 secs
+n = 16    t = 16.470 secs
+n = 32    t = 51.547 secs
+
+My prediction for the big O was O(nk) and this demonstrates that since the time doubles as n doubled and k is kept constant. The time also doubles as k is doubled and n is kept constant which is consistent with the O(nk) equation.
+
+Q11. Include the data from your execution timing and explain how it supports the `O(n log k)` runtime for `recMultiMerge`.
+A11. Data (varying n, constant k = 10):
+n = 1000000     t = 1.733 secs
+n = 2000000     t = 3.385 secs
+n = 4000000     t = 6.698 secs
+n = 8000000     t = 13.332 secs
+n = 1600000     t = 57.868 secs
+
+Data (varying k, constant n = 10000000):
+k = 1      t = 0.565 secs
+k = 2      t = 5.136 secs
+k = 4      t = 10.037 secs
+k = 8      t = 14.822 secs
+k = 16     t = 19.970 secs
+
+This data makes sense with the big O function O(n log k) as everytime n is doubled, the runtime is roughly doubled. However, every time that k is doubled, we can see that at lower values the growth rate is faster, but as it approached k = 16, the growth begins to slow which is characteristic of a log function.
+
+Q12. You run `recMultiMerge` on a sequence of size 1 million and see that it completes just fine. Explain why this is not running afoul of the call stack capacity limitation.  _Hint_: How many stack frames (levels) are expected to be on the call stack at the deepest point in the recursion in `recMultiMerge`?
+A12. For recMultiMerge on a sequence that is size one million, there would only be about 20 levels at the deepest point in the recursion. This is no where close to the capacity that is around 16,000 levels, so the program would not abruptly end.
+

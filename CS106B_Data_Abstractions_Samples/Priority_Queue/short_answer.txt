@@ -1,0 +1,173 @@
+Sriya Mantena
+
+Warmup
+-------
+Q1. How do the values of the member variables of `allBalls[0]` change from iteration to iteration? Specifically, what happens to the values of `_id`, `_x`, and `_y`?
+A1. Each iteration, the _id of the ball stays the same and the _x and the _y of the ball are updated based on the _vx and _vy values.
+
+Q2. How do the values of the member variables of the stuck ball change from iteration to iteration? Contrast this to your answer to the previous question.
+A2. The _vx and _vy values flip on every iteration from 4 and 2 to 4 and -2 respectively. These changes are reflected in the _x and _y values of the ball, making it oscillate up and down near the bottom corner of the screen. In the previous question, the velocities only flipped after the ball crossed the screen and hit another edge whereas the velocity keep flipping every iteration in this case.
+
+Q3. After forcing the stuck ball to position (0, 0), does the ball move normally from there or does it stay stuck?
+A3. TThe ball starts moving normally.
+
+Q4. On your system, what is the observed consequence of these memory errors:
+- access an index outside the allocated array bounds?
+- delete same memory twice?
+- access memory after it has been deleted?
+A4.
+
+access an index outside the allocated array bounds?
+In debug mode, when trying to set the value of an array idex out of bounds, the test did not pass. There was a nonsensical number at that index. When running the code normally however, the test passed and showed that the string at that index equaled “banana.”
+
+delete same memory twice?
+When run normally, the programming did not crash but an error was thrown in the application output that says the system functions detect a corrupt state. When run in debug mode, the program pauses at the line that attempts to delete the memory again and there is a warning indicating that we are attempting to delete released memory. After taskList is deleted, the value of the priority in the struct changes to a random value before the second attempt to delete it.
+
+access memory after it has been deleted?
+The test passes when the code is run normally and when it is run in debug mode. When putting a breakpoint in the test case and tracking the taskList array, the string value remains unchanged allowing the test to pass.
+
+
+PQArray
+-------
+Q5. There are extensive comments in both the interface (`pqarray.h`) and implementation (`pqarray.cpp`). Explain how and why the comments in the interface differ from those in the implementation. Consider both the content and audience for the documentation.
+A5. The comments in the header file are more functional for people who would actually use the class. It states the run times, return values, and the operation that each of the functions performs. These comments are targetted to the user. In the implementation (pqarray.cpp), the comments are more for people on the programming end. They describe the in depth nuances of each of the variables and functionalities that are important to know while changing/adding to the code.
+
+Q6. The class declares member variables `_numAllocated` and `_numFilled`. What is the difference between these two counts and why are both needed?
+A6. _numAllocated is the capacity of the array (how many elements it can hold), while _numFilled refers to the actual number of elements in the queue that were added by the user.
+
+Q7. Although code within the body of a member function can directly access the object's member variables, the implementer may instead choose to call public member functions to get information about the object. For example, note how the operations `isEmpty()` and `peek()` intentionally call `size()` instead of using `_numFilled` or how `dequeue()` calls `peek()` to retrieve the frontmost element. Why might be this be considered a better design?
+A7. It allows us to not repeat code and makes it more modular. For example, if we wanted to change the way we measured the size of the array, instead of having to change the code in every instance that we need to the size of the array, we can just change the central function. Additionally, calling and changing these private variables in several functions can make the code messy and hard to debug.
+
+Q8. Give the results from your time trials and explain how they support your prediction for the Big-O runtimes of  `enqueue` and `dequeue`.
+A8.
+
+Enqueue
+n = 2500   t = 0.048 secs
+n = 5000   t = 0.194 secs
+n = 10000   t = 0.788 secs
+n = 20000   t = 3.098 secs
+
+Dequeue
+n = 12500   t = 0.002 secs
+n = 25000   t = 0.003 secs
+n = 50000   t = 0.006 secs
+n = 100000   t = 0.0022 secs
+
+This makes sense as the bigO for enqueuing an element is O(N), so enqueuing n elements would result in O(N^2). As the number of elements being added doubles the runtime quadruples. For dequeue, each time we run the dequeue function, the bigO is O(1) so if we double the number of elements we are calling it on we expect the runtime to double which is approximately reflected in the data.
+
+PQ Client
+---------
+Q9. Based on the Big O of `enqueue`/`dequeue`, what do you expect for the Big O of `pqSort` if using a `PQArray`? Run some timing trials to confirm your prediction, and include that data in your answer.
+A9.
+pqSort
+n = 5000     t = 0.253 secs
+n = 10000   t = 1.013 secs
+n = 20000   t = 4.075 secs
+n = 40000   t = 15.127 secs
+
+I would expect the BigO to be O(N^2) since N operations need to be done to sort each element of the vector. This is confirmed in the timed trials as every time the size of the array is doubled, the runtime quadruples.
+
+Q10. Based on the Big O of `enqueue`/`dequeue`, what do you expect for the Big O of `topK` in terms of `k` and `n` if using a `PQArray`? Run some timing trials to confirm your prediction, and include that data in your answer.
+A10.
+
+Topk (size varies, k = 10)
+size = 200000     t = 0.334 secs
+size = 400000     t = 0.663 secs
+size = 800000     t = 1.330 secs
+size = 1600000   t = 2.729 secs
+
+Topk (k varies, size = 200000)
+n = 10     t = 0.336 secs
+n = 20     t = 0.337 secs
+n = 40     t = 0.343 secs
+n = 80     t = 0.355 secs
+
+I would expect the BigO to be O(N). This matches the data as everytime the size, N, is doubled, the runtime is doubled and the runtime does not vary significantly as k doubles.
+
+
+PQHeap
+------
+Q11. Start with an empty binary heap and enqueue the nine `DataPoint`s in the order shown below and show the result. You only need to show the final heap, not intermediate steps. Draw the heap as tree-like diagram with root element on top, its two children below, and so on. Yes, we know that we're asking you to draw pictures in a text file (we love the [AsciiFlow](http://asciiflow.com/) tool for "drawing" in text).
+A11.
+
+ ┌─────────┐
+ │{"T",1}  │
+┌┴─────────┴────┐
+│               │
+│                  ┌────▼─────┐
+ ┌──────▼─┐        │ {"G",2}  │
+ │ {"B",3}│        └─────┬────┴─────────┐
+┌┴────────┴──┐                │          │
+│            │                │           │
+│            │             ┌──▼─────┐  ┌───▼────┐
+┌────▼──┐     ┌───▼───┐    │{"V",9} │  │{"R",4} │
+│{"S",6}│     │{"A",5}│    └────────┘  └────────┘
+┌─┴───────┴──┐└───────┘
+│            │
+│            │
+┌────▼──┐   ┌─────▼───┐
+│{"O",8}│   │ {"K",7} │
+└───────┘   └─────────┘
+
+Q12. Make two calls to `dequeue` on the above binary heap and draw the updated result.
+A12.
+
+┌─────────┐
+│ ("B",3} │
+┌┴─────────┴────  ┐
+│                  │
+│                 ┌────▼─────┐
+┌──────▼─┐        │ {"R",4}  │
+│ {"A",5}│        └─────┬────┴─────────┐
+┌┴────────┴──┐           │              │
+│            │            │              │
+│            │             ┌──▼─────┐    ┌───▼────┐
+┌────▼──┐     ┌───▼───┐    │{"V",9} │    │{"K",7} │
+│{"S",6}│     │{"O",8}│    └────────┘    └────────┘
+└───────┘     └───────┘
+
+Q13. Draw the array representation of the binary heap above. Label each element with its array index.
+A13.
+
+{{ "B", 3 }, { "A", 5 }, { "R", 4 }, { "S", 6 }, { "O", 8 }, { "V", 9 }, { "K", 7 }}
+      0                1             2             3              4              5             6
+
+
+Q14. Re-run the timing trials on `pqclient.cpp` and provide your results that confirm that `pqSort` runs in time O(NlogN) and `topK` in O(NlogK).
+A14.
+
+pqSort -- time doubles (approximately) as size doubles
+n = 5000     t = 0.006 secs
+n = 10000   t = 0.013 secs
+n = 20000   t = 0.027 secs
+n = 40000   t = 0.056 secs
+
+Topk (size varies, k = 10) -- time doubles as size doubles
+size = 200000     t = 0.006 secs
+size = 400000     t = 0.0013 secs
+size = 800000     t = 0.0027 secs
+size = 1600000   t = 0.056 secs
+
+Topk (k varies, size = 200000) -- time barely varies as size doubles
+n = 10     t = 0.499 secs
+n = 20     t = 0.429 secs
+n = 40     t = 0.453 secs
+n = 80     t = 0.484 secs
+
+
+Embedded Ethics
+---------------
+Q15. What are the advantages and disadvantages of this priority queue design? Consider how difficult it would be to develop and test the code, the efficiency of its operations, and how well it could handle a variety of inputs.
+A15. Some advantages of this design is that it is quite easy to test and develop the code. The efficiency of its operations would also be relatively high. Since the desig is so simple, however, this design would not be able to differentiate much between elements and meaningfully process a variety of inputs. Since there are only 3 priority levels, when there is a large number of elements, the order that the elements are deqeued will mostly depend on when they were added to the queue.
+
+Q16. Should the thresholds be `int`s or `double`s? Describe a real-world three-bin priority queue for which either `int`s or `double`s  would be preferable and explain why.  How could your decision impact how your client uses the priority queue?
+A16. For the three bin scenario we can use ints because of the integer thresholds. For example if an element priority is 9.8, it will truncate to 9 as an integer and wont be included, but if it is 10.1, it will truncate to 10 as an integer and will be included as needed. Integers would work in situations where the cutoff is an integer value. For example, if the priority value represented the amount of jobs that a job applicant has had. If the threshold is not a integer, then we must use the double data type. An example of this could be grouping people based on their sprint times (20.23 second threshold).
+
+Q17. Different admissions departments consider different factors in admissions and convert admissions criteria to numbers different ways.  Regardless of what specific factors are considered, should an admissions department use a purely numerical rankings based system? Why or why not? Include in your justification at least one additional factor and explain why it would or would not be difficult to include in an individual ranking based on numerical score.
+A17. Admissions decisions should not be solely based on a numerical ranking system. Students from different socioeconomic backgrounds have access to different amounts of resources which have a significant impact on their stats. It is hard to be able to take factors such as identity-based discrimination, economic stability, and family situations into consideration with a numerical system. Trying to do so can lead to exacerbated biases.
+
+Q18. Describe a real-world scenario not yet mentioned in which a priority queue does not work well because classification with a single number misses important context.
+A18. A priority queue may be used to donate organs to noeonates with congenital heart disease based on solely their APGAR score. This single score, however, does not account for their disease progression, life expectancy, degree of aorta malformation, etc. All of these factors are neede to adequately evaluate patients in line for a donor organ. (AHH I wrote this before I read the next question about organ donation.)
+
+Q19. How would you design an implementation for the hospital's priority queue that dynamically determines which patient is the best match whenever a new organ becomes available? __Note:__ Your design does not have to be the fastest or most efficient.
+A19. I would start with the statically assigned version as a framework. I would then have a specific function on the public end which would allow physicians to change the priority score of a specific patient. The function would dequeue everything in the original array and enqueue the elemtns a new one until the specific patient is reached. It would then skip this patient and dequeue the rest of the elements. Now we will have a new array that does not include the patient with the changed value. A new datapoint with the updated patient value will be enqueued to the new array.
